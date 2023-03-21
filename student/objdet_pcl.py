@@ -59,18 +59,32 @@ def show_range_image(frame, lidar_name):
     print("student task ID_S1_EX1")
 
     # step 1 : extract lidar data and range image for the roof-mounted lidar
+
+    lidar = [obj for obj in frame.lasers if obj.name == lidar_name][0] # get laser data structure from frame
+    ri = []
+    if len(lidar.ri_return1.range_image_compressed) > 0: # use first response
+        ri = dataset_pb2.MatrixFloat()
+        ri.ParseFromString(zlib.decompress(lidar.ri_return1.range_image_compressed))
+        ri = np.array(ri.data).reshape(ri.shape.dims)
     
     # step 2 : extract the range and the intensity channel from the range image
-    
+    ri_range = ri[:,:,0]
+    ri_intensity = ri[:,:,1]
+
     # step 3 : set values <0 to zero
+    ri_range[ri_range<0]=0.0
+    ri_intensity[ri_intensity<0]=0.0
     
     # step 4 : map the range channel onto an 8-bit scale and make sure that the full range of values is appropriately considered
-    
+    ri_range = ri_range * 255 / (np.amax(ri_range) - np.amin(ri_range))
+
     # step 5 : map the intensity channel onto an 8-bit scale and normalize with the difference between the 1- and 99-percentile to mitigate the influence of outliers
-    
+    ri_intensity = np.amax(ri_intensity)/2 * ri_intensity * 255 / np.amax(ri_intensity) - np.amin(ri_intensity)
+
     # step 6 : stack the range and intensity image vertically using np.vstack and convert the result to an unsigned 8-bit integer
-    
-    img_range_intensity = [] # remove after implementing all steps
+    ri_stack = np.vstack(ri_range,ri_intensity)
+    img_range_intensity = ri_stack.astype(np.uint8)
+
     #######
     ####### ID_S1_EX1 END #######     
     
@@ -95,10 +109,15 @@ def bev_from_pcl(lidar_pcl, configs):
     print("student task ID_S2_EX1")
 
     ## step 1 :  compute bev-map discretization by dividing x-range by the bev-image height (see configs)
+    bev_discret = (configs.lim_x[1] - configs.lim_x[0]) / configs.bev_height
 
     ## step 2 : create a copy of the lidar pcl and transform all metrix x-coordinates into bev-image coordinates    
+    lidar_pcl_cpy = np.copy(lidar_pcl)
+    lidar_pcl_cpy[:,0] = np.int_(np.floor(lidar_pcl_cpy[:,0] / bev_discret))
 
     # step 3 : perform the same operation as in step 2 for the y-coordinates but make sure that no negative bev-coordinates occur
+    lidar_pcl_cpy[:,1] = np.int_(np.floor(lidar_pcl_cpy[:,1] / bev_discret) + (configs.bev_width +1) / 2)
+    lidar_pcl_cpy[:,2] = lidar_pcl_cpy[:,2] - configs.lim_z[0]
 
     # step 4 : visualize point-cloud using the function show_pcl from a previous task
     
