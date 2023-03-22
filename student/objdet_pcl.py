@@ -52,11 +52,13 @@ def show_pcl(pcl):
     # step 4 : for the first frame, add the pcd instance to visualization using add_geometry; for all other frames, use update_geometry instead
     
     vis.add_geometry(pcd)
+    print("not like this")
     
     # step 5 : visualize point cloud and keep window open until right-arrow is pressed (key-code 262)
     def key_callback(vis):
         print("Next")
-        vis.close()
+        vis.update_geometry(pcd)
+        #vis.close()
 
     vis.register_key_callback(262, key_callback)
     vis.update_renderer()
@@ -102,6 +104,13 @@ def show_range_image(frame, lidar_name):
     # step 6 : stack the range and intensity image vertically using np.vstack and convert the result to an unsigned 8-bit integer
     ri_stack = np.vstack((ri_range,ri_intensity))
     img_range_intensity = ri_stack.astype(np.uint8)
+
+    # according to rubric: Crop range image to +/- 90 deg. left and right of the forward-facing x-axis
+    deg90 = int(img_range_intensity.shape[1] / 4)
+    center = int(img_range_intensity.shape[1]/2)
+    img_range_intensity = img_range_intensity[:,center-deg90:center+deg90]
+
+
 
     #######
     ####### ID_S1_EX1 END #######     
