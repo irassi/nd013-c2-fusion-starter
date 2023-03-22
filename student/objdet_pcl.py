@@ -52,17 +52,15 @@ def show_pcl(pcl):
     # step 4 : for the first frame, add the pcd instance to visualization using add_geometry; for all other frames, use update_geometry instead
     
     vis.add_geometry(pcd)
-    print("not like this")
-    
+   
     # step 5 : visualize point cloud and keep window open until right-arrow is pressed (key-code 262)
     def key_callback(vis):
-        print("Next")
-        vis.update_geometry(pcd)
-        #vis.close()
+        vis.close()
 
     vis.register_key_callback(262, key_callback)
-    vis.update_renderer()
+    vis.update_geometry(pcd)
     vis.poll_events()
+    vis.update_renderer()
     vis.run()
 
 
