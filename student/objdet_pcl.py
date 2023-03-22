@@ -32,7 +32,6 @@ from tools.waymo_reader.simple_waymo_open_dataset_reader import dataset_pb2, lab
 # object detection tools and helper functions
 import misc.objdet_tools as tools
 
-
 # visualize lidar point-cloud
 def show_pcl(pcl):
 
@@ -52,27 +51,16 @@ def show_pcl(pcl):
 
     # step 4 : for the first frame, add the pcd instance to visualization using add_geometry; for all other frames, use update_geometry instead
     
-    #GLOBAL VARIABLE ??!?
-    first = True
-    print(first)
-
-    if first:
-        vis.add_geometry(pcd)
-        first = False
-        print(first)
-
-
+    vis.add_geometry(pcd)
     
     # step 5 : visualize point cloud and keep window open until right-arrow is pressed (key-code 262)
     def key_callback(vis):
         print("Next")
-
-        vis.update_geometry(pcd) # THIS DOESN'T WORK 
-
-        #vis.destroy_window()
-        #this works, but I need update
+        vis.close()
 
     vis.register_key_callback(262, key_callback)
+    vis.update_renderer()
+    vis.poll_events()
     vis.run()
 
 
