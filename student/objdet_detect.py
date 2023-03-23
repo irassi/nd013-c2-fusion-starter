@@ -214,6 +214,8 @@ def detect_objects(input_bev_maps, model, configs):
                                 outputs['dim'], K=configs.K)
             detections = detections.cpu().numpy().astype(np.float32)
             detections = res_post_processing(detections, configs)
+            detections = detections[0][1]
+
             #######
             ####### ID_S3_EX1-5 END #######     
 
@@ -227,11 +229,35 @@ def detect_objects(input_bev_maps, model, configs):
 
     ## step 1 : check whether there are any detections
 
+    if len(detections) > 0:
+
         ## step 2 : loop over all detections
-        
+        for obj in detections:
+
             ## step 3 : perform the conversion using the limits for x, y and z set in the configs structure
-        
+            _score, _x, _y, _z, _h, _w, _l, _yaw = obj
+
+            #bev_discret = (configs.lim_x[1] - configs.lim_x[0]) / configs.bev_height
+            #x = x * bev_discret
+            #y = y * bev_discret  -(configs.bev_width +1) /2
+            #z = z + configs.lim_z[0]
+
+            x = _y / configs.bev_height * (configs.lim_x[1] - configs.lim_x[0])
+            y = _x / configs.bev_width * (configs.lim_y[1] - configs.lim_y[0]) - (configs.lim_y[1] - configs.lim_y[0]) /2
+            z = _z
+            w = _w / configs.bev_width * (configs.lim_y[1] - configs.lim_y[0])
+            l = _l / configs.bev_height * (configs.lim_x[1] - configs.lim_x[0])
+            yaw = -_yaw
+
+            obj = [1, x, y, z, _h, w, l, yaw]
+
+            # if ((x >= configs.lim_x[0]) and (x <= configs.lim_x[1])
+            #     and (y >= configs.lim_y[0]) and (y <= configs.lim_y[1])
+            #     and (z >= configs.lim_z[0]) and (z <= configs.lim_z[1])):
+            
             ## step 4 : append the current object to the 'objects' array
+            objects.append(obj)
+
         
     #######
     ####### ID_S3_EX2 START #######   
