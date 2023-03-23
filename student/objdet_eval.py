@@ -142,7 +142,7 @@ def compute_performance_stats(det_performance_all):
         fp = fp + pos_neg[3]
     
     ## step 2 : compute precision
-    precision = tp / (tp + fp))  
+    precision = tp / (tp + fp) 
 
     ## step 3 : compute recall 
     recall = tp / (tp + fn)
