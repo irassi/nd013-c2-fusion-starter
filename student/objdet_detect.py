@@ -137,6 +137,9 @@ def load_configs(model_name='fpn_resnet', configs=None):
     configs.output_width = 608 # width of result image (height may vary)
     configs.obj_colors = [[0, 255, 255], [0, 0, 255], [255, 0, 0]] # 'Pedestrian': 0, 'Car': 1, 'Cyclist': 2
 
+    #min iou
+    configs.min_iou = 0.5
+
     return configs
 
 
@@ -237,11 +240,6 @@ def detect_objects(input_bev_maps, model, configs):
             ## step 3 : perform the conversion using the limits for x, y and z set in the configs structure
             _score, _x, _y, _z, _h, _w, _l, _yaw = obj
 
-            #bev_discret = (configs.lim_x[1] - configs.lim_x[0]) / configs.bev_height
-            #x = x * bev_discret
-            #y = y * bev_discret  -(configs.bev_width +1) /2
-            #z = z + configs.lim_z[0]
-
             x = _y / configs.bev_height * (configs.lim_x[1] - configs.lim_x[0])
             y = _x / configs.bev_width * (configs.lim_y[1] - configs.lim_y[0]) - (configs.lim_y[1] - configs.lim_y[0]) /2
             z = _z
@@ -251,10 +249,6 @@ def detect_objects(input_bev_maps, model, configs):
 
             obj = [1, x, y, z, _h, w, l, yaw]
 
-            # if ((x >= configs.lim_x[0]) and (x <= configs.lim_x[1])
-            #     and (y >= configs.lim_y[0]) and (y <= configs.lim_y[1])
-            #     and (z >= configs.lim_z[0]) and (z <= configs.lim_z[1])):
-            
             ## step 4 : append the current object to the 'objects' array
             objects.append(obj)
 
