@@ -36,7 +36,7 @@ I initialized an *association matrix* with infinite values and update it with th
 
 The RMSE Plot showing multiple tracked targets shown below. The mean values for all tracks are below 0.2.
 
-![Step 3 RMSE Plot](img/Step4-RMSE_plot.png)
+![Step 3 RMSE Plot](img/Step3-RMSE_plot.png)
 
 ## Step 4
 In the final step I introduced camera-lidar fusion by implementing a nonlinear camera measurement model and checking for camera visibility in *measurements.py*. 
