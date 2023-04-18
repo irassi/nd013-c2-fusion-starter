@@ -39,9 +39,9 @@ class Association:
         ############
         
         # # the following only works for at most one track and one measurement
-        self.association_matrix = np.matrix([]) # reset matrix
-        self.unassigned_tracks = [] # reset lists
-        self.unassigned_meas = []
+        # self.association_matrix = np.matrix([]) # reset matrix
+        # self.unassigned_tracks = [] # reset lists
+        # self.unassigned_meas = []
 
         N = len(track_list) # N tracks
         M = len(meas_list) # M measurements
@@ -59,7 +59,8 @@ class Association:
                 dist = self.MHD(track, meas, KF)
                 if self.gating(dist, meas.sensor):
                     self.association_matrix[i,j] = dist
-        
+
+       
         # if len(meas_list) > 0:
         #     self.unassigned_meas = [0]
         # if len(track_list) > 0:

@@ -20,7 +20,6 @@ PACKAGE_PARENT = '..'
 SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 import misc.params as params 
-import student.measurements as measurements
 
 class Filter:
     '''Kalman filter class'''
@@ -52,6 +51,8 @@ class Filter:
         q1 = ((dt**3)/3) * q 
         q2 = ((dt**2)/2) * q 
         q3 = dt * q 
+
+   
         return np.matrix([[q1, 0, 0, q2, 0, 0],
                           [0, q1, 0, 0, q2, 0],
                           [0, 0, q1, 0, 0, q2],
