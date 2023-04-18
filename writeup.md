@@ -34,9 +34,9 @@ Step 3 introduced multiple target tracking to the project, by using single neare
 
 I initialized an *association matrix* with infinite values and update it with the MHD values only if it meets the *gating* criteria tested with the *'gating()'* method.
 
-The RMSE Plot showing multiple tracked targets shown below. The mean values for most tracks are well below 0.1.
+The RMSE Plot showing multiple tracked targets shown below. The mean values for all tracks are below 0.2.
 
-![Step 3 RMSE Plot](img/Step3-RMSE_plot.png)
+![Step 3 RMSE Plot](img/Step4-RMSE_plot.png)
 
 ## Step 4
 In the final step I introduced camera-lidar fusion by implementing a nonlinear camera measurement model and checking for camera visibility in *measurements.py*. 
@@ -47,14 +47,14 @@ Method *'get_hx()'* is updated with the nonlinear camera measurement function th
 
 The results of this step are shown in the RMSE Plot below and the movie file "results\my_tracking_results.avi" which unfortunately is too big to include in GitHub. I added the movie file to my Google Drive and you should be able to access it from this folder https://drive.google.com/drive/folders/1PdGI9VZm2wHuwZ5VpsRn3a8W_M8K1-i2?usp=share_link
 
-The plot shows that track 0 and track 1 are followed from beginning to end without interruptions and their RMSE mean values are at a great level. Other tracks also are on average at a good range except the spikes at the ends. 
+The plot shows that track 0 and track 1 are followed from beginning to end without interruptions and their RMSE mean values are at a great level. 
 
 ![Step 4 RMSE Plot](img/Step4-RMSE_plot.png)
 
 ### 2. Do you see any benefits in camera-lidar fusion compared to lidar-only tracking (in theory and in your concrete results)? 
 Cameras can provide information that a lidar can't, such as color or texture of an object. This information can be of assistance in distinguishing between two similar or overlapping objects. Also in general the images can provide important contextual information such as road signs. 
 
-In my project implementation and using the camera visibility checks I was able to achieve a very low RMSE value which speaks for itself.
+In my project implementation and using the camera visibility checks I was able to achieve a low RMSE value which speaks for itself.
 
 ### 3. Which challenges will a sensor fusion system face in real-life scenarios? Did you see any of these challenges in the project?
 
