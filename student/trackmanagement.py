@@ -141,14 +141,6 @@ class Trackmanagement:
                 self.delete_track(track) 
 
 
-        # for index in unassigned_tracks:
-        #     track = self.track_list[index]
-        #     if (track.state == 'confirmed' and track.score <= params.delete_threshold) \
-        #             or track.state != 'confirmed' and (track.P[0, 0] > params.max_P \
-        #             or track.state != 'confirmed' and track.P[1, 1] > params.max_P) \
-        #             or (track.score < 0.05):
-        #         self.delete_track(track) 
-
         ############
         # END student code
         ############ 
@@ -179,7 +171,7 @@ class Trackmanagement:
         ############
 
         track.score += 1.0 /params.window
-        
+
         if track.score >= params.confirmed_threshold:
             track.state = 'confirmed'
         else:
