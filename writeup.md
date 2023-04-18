@@ -45,15 +45,28 @@ The method *'in_fov()'* checks if the object is in the field of view for the sen
 
 Method *'get_hx()'* is updated with the nonlinear camera measurement function that is used for camera sensors. 
 
-The results of this step are shown in the RMSE Plot below and the movie file "results\my_tracking_results.avi" which unfortunately is too big to include in GitHub. The plot shows that track 0 and track 1 are followed from beginning to end without interruptions and their RMSE mean values are at a great level. Other tracks also are on average at a good range except the spikes at the ends. 
+The results of this step are shown in the RMSE Plot below and the movie file "results\my_tracking_results.avi" which unfortunately is too big to include in GitHub. I added the movie file to my Google Drive and you should be able to access it from this folder https://drive.google.com/drive/folders/1PdGI9VZm2wHuwZ5VpsRn3a8W_M8K1-i2?usp=share_link
+
+The plot shows that track 0 and track 1 are followed from beginning to end without interruptions and their RMSE mean values are at a great level. Other tracks also are on average at a good range except the spikes at the ends. 
 
 ![Step 4 RMSE Plot](img/Step4-RMSE_plot.png)
 
 ### 2. Do you see any benefits in camera-lidar fusion compared to lidar-only tracking (in theory and in your concrete results)? 
+Cameras can provide information that a lidar can't, such as color or texture of an object. This information can be of assistance in distinguishing between two similar or overlapping objects. Also in general the images can provide important contextual information such as road signs. 
 
+In my project implementation and using the camera visibility checks I was able to achieve a very low RMSE value which speaks for itself.
 
 ### 3. Which challenges will a sensor fusion system face in real-life scenarios? Did you see any of these challenges in the project?
+
+Some challenges of sensor fusion systems I believe could be sensor occlusion, calibration, and environment. By sensor occlusion I mean that in a real-world scenario the objects that are tracked are not 100% visible at all times and can be blocked by other objects. The tracking needs to be able to handle this.
+
+Calibration is crucial for any sensor, and since a self-driving car will in most cases have quite many sensors that need to work together, the importance is even greater.
+
+Environmental factors like rain or snow can decrease lidar performance, where as cameras need adequate light and visibility to function. These factors need to be considered and mitigated in the sensor fusion system.
 
 
 ### 4. Can you think of ways to improve your tracking results in the future?
 
+The results in this project were achieved with a simple nearest neighbor calculation, more advanced data association could be implemented for even greater results. 
+
+Also the default parameters could be adjusted in an attempt to improve the results, but the RMSE values are already at a good level in my opinion.
